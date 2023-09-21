@@ -18,6 +18,7 @@ import com.exercise.supplementalram.MainNavigation.RecyclerViewAdapters.SuppChec
 import com.exercise.supplementalram.MainNavigation.ViewModels.MenuViewModel
 import com.exercise.supplementalram.MainViewModel
 import com.exercise.supplementalram.R
+import com.exercise.supplementalram.ViewUtilBox.TextUtil.Companion.textUtil
 import com.exercise.supplementalram.databinding.FragmentMenuBinding
 
 class MenuFragment : Fragment(), OnMenuCallback {
@@ -42,6 +43,7 @@ class MenuFragment : Fragment(), OnMenuCallback {
     }
 
     private fun initView(){
+        binding.menuTitleText.textUtil()
         binding.menuNaviButton.setOnClickListener {
             navController.navigate(R.id.action_menuFragment_to_listSuppFragment)
         }
@@ -50,7 +52,6 @@ class MenuFragment : Fragment(), OnMenuCallback {
             setMenuEmptyImage(it.isEmpty())
             setMenuSuppRecyclerView(it)
         }
-
     }
 
     private fun setMenuSuppRecyclerView(list : List<SuppEntity>){
@@ -66,8 +67,6 @@ class MenuFragment : Fragment(), OnMenuCallback {
     override fun onMenuListDeleted(suppEntity: SuppEntity) {
         menuViewModel.delete(suppEntity)
     }
-
-
 }
 
 interface OnMenuCallback{

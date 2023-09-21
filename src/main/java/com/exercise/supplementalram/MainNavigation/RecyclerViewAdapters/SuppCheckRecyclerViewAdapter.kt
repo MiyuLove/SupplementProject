@@ -1,6 +1,7 @@
 package com.exercise.supplementalram.MainNavigation.RecyclerViewAdapters
 
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class SuppCheckRecyclerViewAdapter(
             autoSizeMinTextSize = 15,
             autoSizeMaxTextSize = 30,
             autoSizeStepGranularity = 3,
+            gravity = Gravity.CENTER_VERTICAL
         )
 
         holder.checkItemButton.setOnClickListener {

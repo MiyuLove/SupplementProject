@@ -1,14 +1,19 @@
 package com.exercise.supplementalram.MainNavigation.RecyclerViewAdapters
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.exercise.supplementalram.LocalDatabase.Entity.SuppEntity
+import com.exercise.supplementalram.MainNavigation.OnListCallback
+import com.exercise.supplementalram.ViewUtilBox.TextUtil.Companion.textUtil
 import com.exercise.supplementalram.databinding.ListSuppItemBinding
 import com.exercise.supplementalram.databinding.SuppCheckItemBinding
 
 class ListSuppRecyclerViewAdapter (
-    private val listSupp : List<SuppEntity>,)
+    private val listSupp : List<SuppEntity>,
+    private val onListCallback: OnListCallback
+)
     :RecyclerView.Adapter<ListSuppRecyclerViewAdapter.ViewHolder>(){
 
     class ViewHolder(binding : ListSuppItemBinding) : RecyclerView.ViewHolder(binding.root){
@@ -25,10 +30,11 @@ class ListSuppRecyclerViewAdapter (
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.listItemName.text = listSupp[position].name
+        holder.listItemName.textUtil(listSupp[position].name,gravity = Gravity.START)
         holder.listItemButton.setOnClickListener {
-
+            onListCallback.onListClicked(listSupp[position])
         }
+        holder.listItemButton.textUtil("편집!")
     }
 
     override fun getItemCount(): Int {

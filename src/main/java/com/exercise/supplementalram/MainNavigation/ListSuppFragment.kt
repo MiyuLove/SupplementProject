@@ -8,21 +8,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exercise.supplementalram.LocalDatabase.Entity.SuppEntity
+import com.exercise.supplementalram.MainActivity
 import com.exercise.supplementalram.MainNavigation.RecyclerViewAdapters.ListSuppRecyclerViewAdapter
 import com.exercise.supplementalram.MainNavigation.ViewModels.ListViewModel
+import com.exercise.supplementalram.MainViewModel
 import com.exercise.supplementalram.R
+import com.exercise.supplementalram.ViewUtilBox.TextUtil.Companion.textUtil
 import com.exercise.supplementalram.databinding.FragmentListSuppBinding
 import com.exercise.supplementalram.databinding.ListSuppItemBinding
 
 class ListSuppFragment : Fragment(), OnListCallback {
     private lateinit var binding : FragmentListSuppBinding
     private lateinit var listViewModel : ListViewModel
+    private lateinit var mainViewModel : MainViewModel
+    private lateinit var navController: NavController
+
     private var dd = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listViewModel = ViewModelProvider(this)[ListViewModel::class.java]
+        mainViewModel = (requireActivity() as MainActivity).mainViewModel
     }
 
     override fun onCreateView(
@@ -30,12 +39,13 @@ class ListSuppFragment : Fragment(), OnListCallback {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentListSuppBinding.inflate(inflater,container,false)
+        navController = findNavController()
         initView()
         return binding.root
     }
 
     private fun initView(){
-        Log.d("dd", dd.toString())
+        binding.listSuppTitleText.textUtil()
         binding.listSuppButton.setOnClickListener {
             dd ++
             listViewModel.create(SuppEntity(0,dd.toString(),3,3,"","",false,""))
@@ -43,12 +53,13 @@ class ListSuppFragment : Fragment(), OnListCallback {
 
         listViewModel.getSuppEntityList.observe(viewLifecycleOwner){
             binding.listSuppRecyclerView.layoutManager = LinearLayoutManager(context)
-            binding.listSuppRecyclerView.adapter = ListSuppRecyclerViewAdapter(it)
+            binding.listSuppRecyclerView.adapter = ListSuppRecyclerViewAdapter(it, this)
         }
     }
 
     override fun onListClicked(suppEntity: SuppEntity) {
-        TODO("이거 호출하는 suppEntity를 mainViewModel에 옮겨. 성공적으로 옮기면 그 다음 navigation,,,")
+        mainViewModel.usingSuppData = suppEntity
+        navController.navigate(R.id.action_listSuppFragment_to_infoSuppFragment)
     }
 }
 

@@ -15,10 +15,9 @@ open class BaseViewModel : ViewModel(){
     val getSuppEntityList : LiveData<List<SuppEntity>>
         get() = suppEntityList
 
-    protected fun getAllData()= viewModelScope.launch (Dispatchers.IO){
+    protected fun readAllData()= viewModelScope.launch (Dispatchers.IO){
         suppEntityList = repository.read().asLiveData()
     }
-
 
     fun create(suppEntity: SuppEntity) = viewModelScope.launch (Dispatchers.IO){
         repository.create(suppEntity)

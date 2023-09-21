@@ -13,6 +13,6 @@ import kotlinx.coroutines.launch
 
 class MenuViewModel : BaseViewModel() {
     init{
-        getAllData()
+        readAllData()
     }
 }
